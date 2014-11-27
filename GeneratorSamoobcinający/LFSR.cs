@@ -40,7 +40,7 @@ namespace GeneratorSamoobcinający
         {
             for (int j = 0; j < 2; j++)
             {
-                bool bnew = !(bits[bits.Length - 1] == bits[bits.Length - 2]);
+                bool bnew = bits[bits.Length - 1] ^ bits[bits.Length - 2];
 
                 for (int i = bits.Length - 1; i > 0; i--)
                 {
