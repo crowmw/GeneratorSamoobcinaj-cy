@@ -42,24 +42,6 @@ namespace GeneratorSamoobcinający
         {
             for (int j = 0; j < 2; j++)
             {
-                //switch(taps.Count())
-                //{
-                //    case 2: bnew = bits[bits.Count()-1 - taps[0]] ^ bits[bits.Count()-1 - taps[1]];
-                //        break;
-                //    case 3: bnew = bits[bits.Count()-1 - taps[0]] ^ bits[bits.Count()-1 - taps[1]] ^ bits[bits.Count()-1 - taps[2]];
-                //        break;
-                //    case 4: bnew = bits[bits.Count()-1 - taps[0]] ^ bits[bits.Count()-1 - taps[1]] ^ bits[bits.Count()-1 - taps[2]] ^ bits[bits.Count()-1 - taps[3]];
-                //        break;
-                //    case 5: bnew = bits[bits.Count()-1 - taps[0]] ^ bits[bits.Count()-1 - taps[1]] ^ bits[bits.Count()-1 - taps[2]] ^ bits[bits.Count()-1 - taps[3]] ^ bits[bits.Count()-1 - taps[4]];
-                //        break;
-                //    case 6: bnew = bits[bits.Count()-1 - taps[0]] ^ bits[bits.Count()-1 - taps[1]] ^ bits[bits.Count()-1 - taps[2]] ^ bits[bits.Count()-1 - taps[3]] ^ bits[bits.Count()-1 - taps[4]] ^ bits[bits.Count()-1 - taps[5]];
-                //        break;
-                //    case 7: bnew = bits[bits.Count()-1 - taps[0]] ^ bits[bits.Count()-1 - taps[1]] ^ bits[bits.Count()-1 - taps[2]] ^ bits[bits.Count()-1 - taps[3]] ^ bits[bits.Count()-1 - taps[4]] ^ bits[bits.Count()-1 - taps[5]] ^ bits[bits.Count()-1 - taps[6]];
-                //        break;
-                //    default: bnew = bits[bits.Count()-1 - taps[0]] ^ bits[bits.Count()-1 - taps[1]];
-                //        break;
-                //}
-
                 bool bnew = bits[taps[0]] ^ bits[taps[1]];
                 for (int i = 2; i < taps.Length; i++)
                 {
