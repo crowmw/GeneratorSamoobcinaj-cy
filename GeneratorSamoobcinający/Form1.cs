@@ -24,7 +24,7 @@ namespace GeneratorSamoobcinający
         private void button1_Click(object sender, EventArgs e)
         {
             string seed = textBox1.Text;
-            taps = textBox6.Text.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
+            taps = textBox6.Text.Split(new char[]{','},StringSplitOptions.RemoveEmptyEntries).Select(n => Convert.ToInt32(n)).ToArray();
             LFSR lsfr = new LFSR(seed.Length, seed, taps);
             outputCiag = new StringBuilder();
 
