@@ -14,18 +14,18 @@ namespace GeneratorSamoobcinający
     public partial class Form1 : Form
     {
         private StringBuilder outputCiag;
+        int[] taps;
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        
-
         private void button1_Click(object sender, EventArgs e)
         {
             string seed = textBox1.Text;
-            LFSR lsfr = new LFSR(seed.Length, seed);
+            taps = textBox6.Text.Split(',').Select(n => Convert.ToInt32(n)).ToArray();
+            LFSR lsfr = new LFSR(seed.Length, seed, taps);
             outputCiag = new StringBuilder();
 
             for (int i = 0; i <= Convert.ToInt32(textBox3.Text); i++)
