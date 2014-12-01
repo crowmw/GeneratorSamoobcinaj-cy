@@ -52,7 +52,7 @@ namespace GeneratorSamoobcinający
                 {
                     this.bits[i] = this.bits[i - 1];
                 }
-                this.bits[0] = bnew;
+                this.bits[0] = bnew; 
             }
         }
     }
