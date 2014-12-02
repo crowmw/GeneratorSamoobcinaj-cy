@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,6 +16,9 @@ namespace GeneratorSamoobcinający
     {
         private StringBuilder outputCiag;
         int[] taps;
+        byte[] o;
+        string codedText = "";
+        string[] splitted;
 
         public Form1()
         {
@@ -24,7 +28,7 @@ namespace GeneratorSamoobcinający
         private void button1_Click(object sender, EventArgs e)
         {
             string seed = textBox1.Text;
-            taps = textBox6.Text.Split(new char[]{','},StringSplitOptions.RemoveEmptyEntries).Select(n => Convert.ToInt32(n)).ToArray();
+            taps = textBox6.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(n => Convert.ToInt32(n)).ToArray();
             LFSR lsfr = new LFSR(seed.Length, seed, taps);
             outputCiag = new StringBuilder();
 
@@ -38,22 +42,14 @@ namespace GeneratorSamoobcinający
 
         private void SaveData()
         {
-            if (checkBox1.Checked)
-            {
-                SaveToTXT();
-            }
-
-            if (checkBox2.Checked)
-            {
-                SaveToBIN();
-            }
-
+            SaveToTXT();
+            SaveToBIN();
             WriteToTextBox();
         }
 
         private void WriteToTextBox()
         {
-            textBox2.Text = "";
+            textBox2.Clear();
             textBox2.Text = outputCiag.ToString();
         }
 
@@ -61,7 +57,8 @@ namespace GeneratorSamoobcinający
         {
             FileStream fs = new FileStream("out.bin", FileMode.Create, FileAccess.Write);
             BinaryWriter writer = new BinaryWriter(fs);
-            writer.Write(StringToByte(outputCiag.ToString()));
+            o = StringToByte(outputCiag.ToString());
+            writer.Write(o);
             writer.Close();
             fs.Close();
         }
@@ -113,21 +110,111 @@ namespace GeneratorSamoobcinający
 
         private void button2_Click(object sender, EventArgs e)
         {
-            folderBrowserDialog1.ShowDialog();
-            textBox4.Text = folderBrowserDialog1.SelectedPath;
+            openFileDialog1.ShowDialog();
+            textBox4.Text = openFileDialog1.FileName;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            byte[] fileBytes = File.ReadAllBytes(textBox4.Text);
-            StringBuilder sb = new StringBuilder();
-
-            foreach (byte b in fileBytes)
+            string s = "";
+            if (textBox5.Text != "")
             {
-                sb.Append(Convert.ToString(b, 2).PadLeft(8, '0'));
+                s = File.ReadAllText(textBox5.Text);
+                var b = ToBinary(ConvertToByteArray(s));
+                splitted = b.Split(' ');
             }
 
-            //File.WriteAllText(outputFilename, sb.ToString());
+            Xorowanie(splitted);
+
+            StringBuilder sb1 = Sklejanie(splitted);
+
+            codedText = sb1.ToString();
+            textBox2.Text = codedText;
+            //File.WriteAllText(textBox5.Text, sb1.ToString());
+
+            //Xorowanie(splitted);
+
+            //StringBuilder sb2 = Sklejanie(splitted);
+            ////textBox2.Text = sb2.ToString();
+            //File.WriteAllText(textBox5.Text, sb2.ToString());
+        }
+
+        private StringBuilder Sklejanie(string[] splitted)
+        {
+            StringBuilder sb1 = new StringBuilder();
+            foreach (string letter in splitted)
+            {
+                var let = GetBytesFromBinaryString(letter);
+                var txt = Encoding.ASCII.GetString(let);
+                sb1.Append(txt);
+            }
+            return sb1;
+        }
+
+        private void Xorowanie(string[] splitted)
+        {
+            int x = 0;
+            int i = 0;
+            foreach (string letter in splitted)
+            {
+                byte[] letterByte = StringToByteArray(letter);
+                int j = 0;
+                int[] lit = new int[8];
+                foreach (var bit in letterByte)
+                {
+                    lit[j] = bit ^ o[i];
+                    j++;
+                    i++;
+                }
+                splitted[x] = string.Join("", lit);
+                x++;
+            }
+        }
+
+        private static byte[] StringToByteArray(string b)
+        {
+            int i = 0;
+            byte[] byteTab = new byte[8];
+            foreach (char bit in b)
+            {
+                if (bit == '1')
+                    byteTab[i] = 1;
+                else
+                    byteTab[i] = 0;
+                i++;
+            }
+
+            return byteTab;
+        }
+//----------
+        public Byte[] GetBytesFromBinaryString(String binary)
+        {
+            var list = new List<Byte>();
+
+            for (int i = 0; i < binary.Length; i += 8)
+            {
+                String t = binary.Substring(i, 8);
+
+                list.Add(Convert.ToByte(t, 2));
+            }
+
+            return list.ToArray();
+        }
+//--------------
+        public static byte[] ConvertToByteArray(string str)
+        {
+            return Encoding.ASCII.GetBytes(str);
+        }
+
+        public static String ToBinary(Byte[] data)
+        {
+            return string.Join(" ", data.Select(byt => Convert.ToString(byt, 2).PadLeft(8, '0')));
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+            textBox5.Text = openFileDialog1.FileName;
         }
     }
 }

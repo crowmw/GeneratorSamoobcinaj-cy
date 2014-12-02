@@ -48,11 +48,11 @@ namespace GeneratorSamoobcinający
                     bnew = bnew ^ bits[taps[i]];
                 }
 
-                for (int i = this.bits.Count()-1; i > 0; i--)
+                for (int i = 0; i < bits.Length - 1; i++)
                 {
-                    this.bits[i] = this.bits[i - 1];
+                    bits[i] = bits[i + 1];
                 }
-                this.bits[0] = bnew; 
+                bits[bits.Length - 1] = bnew;
             }
         }
     }
