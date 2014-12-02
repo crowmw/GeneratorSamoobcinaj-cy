@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GeneratorSamoobcinający
+﻿namespace GeneratorSamoobcinający
 {
-    class LFSR
+    internal class LFSR
     {
-        bool[] bits;
-        int[] taps;
+        private bool[] bits;
+        private int[] taps;
 
         public LFSR(int bitCount, string seed, int[] tap)
         {

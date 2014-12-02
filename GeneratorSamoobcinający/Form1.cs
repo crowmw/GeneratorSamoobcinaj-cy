@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GeneratorSamoobcinający
@@ -15,10 +10,10 @@ namespace GeneratorSamoobcinający
     public partial class Form1 : Form
     {
         private StringBuilder outputCiag;
-        int[] taps;
-        byte[] o;
-        string codedText = "";
-        string[] splitted;
+        private int[] taps;
+        private byte[] o;
+        private string codedText = "";
+        private string[] splitted;
 
         public Form1()
         {
@@ -186,7 +181,8 @@ namespace GeneratorSamoobcinający
 
             return byteTab;
         }
-//----------
+
+        //----------
         public Byte[] GetBytesFromBinaryString(String binary)
         {
             var list = new List<Byte>();
@@ -200,7 +196,8 @@ namespace GeneratorSamoobcinający
 
             return list.ToArray();
         }
-//--------------
+
+        //--------------
         public static byte[] ConvertToByteArray(string str)
         {
             return Encoding.ASCII.GetBytes(str);
